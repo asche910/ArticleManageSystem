@@ -5,6 +5,7 @@ import com.article.articlemanagesystem.entity.Module;
 import com.article.articlemanagesystem.service.ModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +24,7 @@ public class ModuleController {
         return CommonResult.success(modules);
     }
 
-    @GetMapping("/add")
+    @PostMapping("/add")
     public CommonResult addModule(Module module){
         moduleService.addModule(module);
         return CommonResult.success(null);

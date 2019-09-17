@@ -24,19 +24,19 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
-    @PostMapping("/publish")
+    @PostMapping("/add")
     public CommonResult publish(Article article, HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user != null) {
+//        User user = (User) request.getSession().getAttribute("user");
+//        if (user != null) {
             article.setId(null);
-            article.setAuthor(user.getUser());
+            article.setAuthor("root");
             article.setTime(TimeUtils.getCurrentTime());
             article.setLikenum(0);
             article.setCommentnum(0);
             articleService.publish(article);
             return CommonResult.success("发布成功！", null);
-        }
-        return CommonResult.failed(ResultCode.VALIDATE_FAILED);
+//        }
+//        return CommonResult.failed(ResultCode.VALIDATE_FAILED);
     }
 
     @RequestMapping("/find/id")
@@ -59,9 +59,15 @@ public class ArticleController {
 
     @RequestMapping("/all")
     public PageInfo getAll(@RequestParam(name = "pageNum", required = false, defaultValue = "1") int pageNum,
-                           @RequestParam(name = "pageSize", defaultValue = "5") int pageSize) {
+                           @RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
         List<Article> allArticle = articleService.getAll(pageNum, pageSize);
         PageInfo pageInfo = new PageInfo<>(allArticle);
         return pageInfo;
+    }
+
+    @RequestMapping("/delete")
+    public CommonResult delete(@RequestParam long id){
+        articleService.deleteById(id);
+        return CommonResult.success();
     }
 }
