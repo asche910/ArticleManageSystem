@@ -68,6 +68,17 @@ public class MainController {
         return "article";
     }
 
+    @GetMapping("/modify")
+    public String newArticle(Model model, Long id){
+        List<Module> modules = moduleService.getAll();
+        model.addAttribute("modules", modules);
+        if (id != null){
+            Article article = articleService.findById(id);
+            model.addAttribute("article", article);
+        }
+        return "modify";
+    }
+
     @GetMapping("/users")
     private String users(){
         return "users";

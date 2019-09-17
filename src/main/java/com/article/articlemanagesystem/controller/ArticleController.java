@@ -4,6 +4,7 @@ import com.article.articlemanagesystem.common.CommonResult;
 import com.article.articlemanagesystem.common.ResultCode;
 import com.article.articlemanagesystem.entity.Article;
 import com.article.articlemanagesystem.entity.User;
+import com.article.articlemanagesystem.mapper.ArticleMapper;
 import com.article.articlemanagesystem.service.ArticleService;
 import com.article.articlemanagesystem.util.TimeUtils;
 import com.github.pagehelper.PageInfo;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Random;
+
+import static com.article.articlemanagesystem.util.PrintUtils.println;
 
 
 @RestController
@@ -23,6 +27,9 @@ public class ArticleController {
 
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private ArticleMapper articleMapper;
 
     @PostMapping("/add")
     public CommonResult publish(Article article, HttpServletRequest request) {
@@ -37,6 +44,19 @@ public class ArticleController {
             return CommonResult.success("发布成功！", null);
 //        }
 //        return CommonResult.failed(ResultCode.VALIDATE_FAILED);
+    }
+
+    @PostMapping("/update")
+    public CommonResult createOrUpdate(Article article){
+        Long id = article.getId();
+
+        if (id != null){
+            articleService.update(article);
+        }else {
+            article.setTime(TimeUtils.getCurrentTime());
+            articleService.publish(article);
+        }
+        return CommonResult.success();
     }
 
     @RequestMapping("/find/id")

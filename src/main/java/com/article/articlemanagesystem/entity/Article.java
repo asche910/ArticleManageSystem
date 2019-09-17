@@ -13,13 +13,13 @@ public class Article implements Serializable {
 
     private String author;
 
-    private Integer type;
+    private Integer type = 0;
 
-    private Integer readnum;
+    private Integer readnum = 0;
 
-    private Integer commentnum;
+    private Integer commentnum = 0;
 
-    private Integer likenum;
+    private Integer likenum = 0;
 
     private String brief;
 

@@ -231,7 +231,7 @@
                     <li class="breadcrumb-item"><a href="/">Home</a> <span>/文章</span></li>
 
                     <li>
-                        <button class="btn btn-primary btn-sm">修改</button>
+                        <a th:href="'/modify?id=' + ${article.id}" class="btn btn-primary btn-sm">修改</a>
                     </li>
                 </ul>
             </div>
@@ -241,7 +241,7 @@
                         <div class="col-lg-auto">
                             <div class="card" id="article-content">
                                 <h1 style="text-align: center; margin-top: 20px"><a th:text="${article.title}"></a></h1>
-                                <div style="padding: 40px; max-width: 1200px; word-break: break-all;white-space: normal;" th:utext="${article.content}"></div>
+                                <div style="padding: 40px; width: 1200px; max-width: 1200px; word-break: break-all;white-space: normal;" th:utext="${article.content}"></div>
                             </div>
                         </div>
 
