@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.article.articlemanagesystem.mapper.ArticleMapper" >
+  <resultMap id="BaseResultMap" type="com.article.articlemanagesystem.entity.Article" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="VARCHAR" />
+    <result column="imgCover" property="imgcover" jdbcType="VARCHAR" />
+    <result column="author" property="author" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="readNum" property="readnum" jdbcType="INTEGER" />
+    <result column="commentNum" property="commentnum" jdbcType="INTEGER" />
+    <result column="likeNum" property="likenum" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.article.articlemanagesystem.entity.Article" extends="BaseResultMap" >
+    <result column="brief" property="brief" jdbcType="LONGVARCHAR" />
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, title, time, imgCover, author, type, readNum, commentNum, likeNum
+  </sql>
+  <sql id="Blob_Column_List" >
+    brief, content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.article.articlemanagesystem.entity.ArticleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from article
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.article.articlemanagesystem.entity.ArticleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from article
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from article
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from article
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.article.articlemanagesystem.entity.ArticleExample" >
+    delete from article
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.article.articlemanagesystem.entity.Article" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into article (title, time, imgCover, 
+      author, type, readNum, 
+      commentNum, likeNum, brief, 
+      content)
+    values (#{title,jdbcType=VARCHAR}, #{time,jdbcType=VARCHAR}, #{imgcover,jdbcType=VARCHAR}, 
+      #{author,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{readnum,jdbcType=INTEGER}, 
+      #{commentnum,jdbcType=INTEGER}, #{likenum,jdbcType=INTEGER}, #{brief,jdbcType=LONGVARCHAR}, 
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.article.articlemanagesystem.entity.Article" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into article
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="imgcover != null" >
+        imgCover,
+      </if>
+      <if test="author != null" >
+        author,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="readnum != null" >
+        readNum,
+      </if>
+      <if test="commentnum != null" >
+        commentNum,
+      </if>
+      <if test="likenum != null" >
+        likeNum,
+      </if>
+      <if test="brief != null" >
+        brief,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="imgcover != null" >
+        #{imgcover,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="readnum != null" >
+        #{readnum,jdbcType=INTEGER},
+      </if>
+      <if test="commentnum != null" >
+        #{commentnum,jdbcType=INTEGER},
+      </if>
+      <if test="likenum != null" >
+        #{likenum,jdbcType=INTEGER},
+      </if>
+      <if test="brief != null" >
+        #{brief,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.article.articlemanagesystem.entity.ArticleExample" resultType="java.lang.Integer" >
+    select count(*) from article
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update article
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.time != null" >
+        time = #{record.time,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imgcover != null" >
+        imgCover = #{record.imgcover,jdbcType=VARCHAR},
+      </if>
+      <if test="record.author != null" >
+        author = #{record.author,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.readnum != null" >
+        readNum = #{record.readnum,jdbcType=INTEGER},
+      </if>
+      <if test="record.commentnum != null" >
+        commentNum = #{record.commentnum,jdbcType=INTEGER},
+      </if>
+      <if test="record.likenum != null" >
+        likeNum = #{record.likenum,jdbcType=INTEGER},
+      </if>
+      <if test="record.brief != null" >
+        brief = #{record.brief,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update article
+    set id = #{record.id,jdbcType=BIGINT},
+      title = #{record.title,jdbcType=VARCHAR},
+      time = #{record.time,jdbcType=VARCHAR},
+      imgCover = #{record.imgcover,jdbcType=VARCHAR},
+      author = #{record.author,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER},
+      readNum = #{record.readnum,jdbcType=INTEGER},
+      commentNum = #{record.commentnum,jdbcType=INTEGER},
+      likeNum = #{record.likenum,jdbcType=INTEGER},
+      brief = #{record.brief,jdbcType=LONGVARCHAR},
+      content = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update article
+    set id = #{record.id,jdbcType=BIGINT},
+      title = #{record.title,jdbcType=VARCHAR},
+      time = #{record.time,jdbcType=VARCHAR},
+      imgCover = #{record.imgcover,jdbcType=VARCHAR},
+      author = #{record.author,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER},
+      readNum = #{record.readnum,jdbcType=INTEGER},
+      commentNum = #{record.commentnum,jdbcType=INTEGER},
+      likeNum = #{record.likenum,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.article.articlemanagesystem.entity.Article" >
+    update article
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="imgcover != null" >
+        imgCover = #{imgcover,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="readnum != null" >
+        readNum = #{readnum,jdbcType=INTEGER},
+      </if>
+      <if test="commentnum != null" >
+        commentNum = #{commentnum,jdbcType=INTEGER},
+      </if>
+      <if test="likenum != null" >
+        likeNum = #{likenum,jdbcType=INTEGER},
+      </if>
+      <if test="brief != null" >
+        brief = #{brief,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.article.articlemanagesystem.entity.Article" >
+    update article
+    set title = #{title,jdbcType=VARCHAR},
+      time = #{time,jdbcType=VARCHAR},
+      imgCover = #{imgcover,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      readNum = #{readnum,jdbcType=INTEGER},
+      commentNum = #{commentnum,jdbcType=INTEGER},
+      likeNum = #{likenum,jdbcType=INTEGER},
+      brief = #{brief,jdbcType=LONGVARCHAR},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.article.articlemanagesystem.entity.Article" >
+    update article
+    set title = #{title,jdbcType=VARCHAR},
+      time = #{time,jdbcType=VARCHAR},
+      imgCover = #{imgcover,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      readNum = #{readnum,jdbcType=INTEGER},
+      commentNum = #{commentnum,jdbcType=INTEGER},
+      likeNum = #{likenum,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

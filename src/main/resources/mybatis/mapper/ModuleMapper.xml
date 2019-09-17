@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.article.articlemanagesystem.mapper.ModuleMapper" >
+  <resultMap id="BaseResultMap" type="com.article.articlemanagesystem.entity.Module" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="brief" property="brief" jdbcType="VARCHAR" />
+    <result column="imgCover" property="imgcover" jdbcType="VARCHAR" />
+    <result column="userNum" property="usernum" jdbcType="INTEGER" />
+    <result column="articleNum" property="articlenum" jdbcType="INTEGER" />
+    <result column="owner" property="owner" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, brief, imgCover, userNum, articleNum, owner
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.article.articlemanagesystem.entity.ModuleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from module
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from module
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from module
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.article.articlemanagesystem.entity.ModuleExample" >
+    delete from module
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.article.articlemanagesystem.entity.Module" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into module (name, brief, imgCover, 
+      userNum, articleNum, owner
+      )
+    values (#{name,jdbcType=VARCHAR}, #{brief,jdbcType=VARCHAR}, #{imgcover,jdbcType=VARCHAR}, 
+      #{usernum,jdbcType=INTEGER}, #{articlenum,jdbcType=INTEGER}, #{owner,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.article.articlemanagesystem.entity.Module" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into module
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="brief != null" >
+        brief,
+      </if>
+      <if test="imgcover != null" >
+        imgCover,
+      </if>
+      <if test="usernum != null" >
+        userNum,
+      </if>
+      <if test="articlenum != null" >
+        articleNum,
+      </if>
+      <if test="owner != null" >
+        owner,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="brief != null" >
+        #{brief,jdbcType=VARCHAR},
+      </if>
+      <if test="imgcover != null" >
+        #{imgcover,jdbcType=VARCHAR},
+      </if>
+      <if test="usernum != null" >
+        #{usernum,jdbcType=INTEGER},
+      </if>
+      <if test="articlenum != null" >
+        #{articlenum,jdbcType=INTEGER},
+      </if>
+      <if test="owner != null" >
+        #{owner,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.article.articlemanagesystem.entity.ModuleExample" resultType="java.lang.Integer" >
+    select count(*) from module
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update module
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.brief != null" >
+        brief = #{record.brief,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imgcover != null" >
+        imgCover = #{record.imgcover,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usernum != null" >
+        userNum = #{record.usernum,jdbcType=INTEGER},
+      </if>
+      <if test="record.articlenum != null" >
+        articleNum = #{record.articlenum,jdbcType=INTEGER},
+      </if>
+      <if test="record.owner != null" >
+        owner = #{record.owner,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update module
+    set id = #{record.id,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      brief = #{record.brief,jdbcType=VARCHAR},
+      imgCover = #{record.imgcover,jdbcType=VARCHAR},
+      userNum = #{record.usernum,jdbcType=INTEGER},
+      articleNum = #{record.articlenum,jdbcType=INTEGER},
+      owner = #{record.owner,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.article.articlemanagesystem.entity.Module" >
+    update module
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="brief != null" >
+        brief = #{brief,jdbcType=VARCHAR},
+      </if>
+      <if test="imgcover != null" >
+        imgCover = #{imgcover,jdbcType=VARCHAR},
+      </if>
+      <if test="usernum != null" >
+        userNum = #{usernum,jdbcType=INTEGER},
+      </if>
+      <if test="articlenum != null" >
+        articleNum = #{articlenum,jdbcType=INTEGER},
+      </if>
+      <if test="owner != null" >
+        owner = #{owner,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.article.articlemanagesystem.entity.Module" >
+    update module
+    set name = #{name,jdbcType=VARCHAR},
+      brief = #{brief,jdbcType=VARCHAR},
+      imgCover = #{imgcover,jdbcType=VARCHAR},
+      userNum = #{usernum,jdbcType=INTEGER},
+      articleNum = #{articlenum,jdbcType=INTEGER},
+      owner = #{owner,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

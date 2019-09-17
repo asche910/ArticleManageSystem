@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.article.articlemanagesystem.mapper.CommentMapper" >
+  <resultMap id="BaseResultMap" type="com.article.articlemanagesystem.entity.Comment" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="articleId" property="articleid" jdbcType="BIGINT" />
+    <result column="time" property="time" jdbcType="VARCHAR" />
+    <result column="floor" property="floor" jdbcType="INTEGER" />
+    <result column="likeNum" property="likenum" jdbcType="INTEGER" />
+    <result column="parentId" property="parentid" jdbcType="INTEGER" />
+    <result column="userAuthor" property="userauthor" jdbcType="VARCHAR" />
+    <result column="imgAuthor" property="imgauthor" jdbcType="VARCHAR" />
+    <result column="nameAuthor" property="nameauthor" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.article.articlemanagesystem.entity.Comment" extends="BaseResultMap" >
+    <result column="comment" property="comment" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, articleId, time, floor, likeNum, parentId, userAuthor, imgAuthor, nameAuthor
+  </sql>
+  <sql id="Blob_Column_List" >
+    comment
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.article.articlemanagesystem.entity.CommentExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.article.articlemanagesystem.entity.CommentExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from comment
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from comment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.article.articlemanagesystem.entity.CommentExample" >
+    delete from comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.article.articlemanagesystem.entity.Comment" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into comment (articleId, time, floor, 
+      likeNum, parentId, userAuthor, 
+      imgAuthor, nameAuthor, comment
+      )
+    values (#{articleid,jdbcType=BIGINT}, #{time,jdbcType=VARCHAR}, #{floor,jdbcType=INTEGER}, 
+      #{likenum,jdbcType=INTEGER}, #{parentid,jdbcType=INTEGER}, #{userauthor,jdbcType=VARCHAR}, 
+      #{imgauthor,jdbcType=VARCHAR}, #{nameauthor,jdbcType=VARCHAR}, #{comment,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.article.articlemanagesystem.entity.Comment" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="articleid != null" >
+        articleId,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="floor != null" >
+        floor,
+      </if>
+      <if test="likenum != null" >
+        likeNum,
+      </if>
+      <if test="parentid != null" >
+        parentId,
+      </if>
+      <if test="userauthor != null" >
+        userAuthor,
+      </if>
+      <if test="imgauthor != null" >
+        imgAuthor,
+      </if>
+      <if test="nameauthor != null" >
+        nameAuthor,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="articleid != null" >
+        #{articleid,jdbcType=BIGINT},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="floor != null" >
+        #{floor,jdbcType=INTEGER},
+      </if>
+      <if test="likenum != null" >
+        #{likenum,jdbcType=INTEGER},
+      </if>
+      <if test="parentid != null" >
+        #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="userauthor != null" >
+        #{userauthor,jdbcType=VARCHAR},
+      </if>
+      <if test="imgauthor != null" >
+        #{imgauthor,jdbcType=VARCHAR},
+      </if>
+      <if test="nameauthor != null" >
+        #{nameauthor,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.article.articlemanagesystem.entity.CommentExample" resultType="java.lang.Integer" >
+    select count(*) from comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update comment
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.articleid != null" >
+        articleId = #{record.articleid,jdbcType=BIGINT},
+      </if>
+      <if test="record.time != null" >
+        time = #{record.time,jdbcType=VARCHAR},
+      </if>
+      <if test="record.floor != null" >
+        floor = #{record.floor,jdbcType=INTEGER},
+      </if>
+      <if test="record.likenum != null" >
+        likeNum = #{record.likenum,jdbcType=INTEGER},
+      </if>
+      <if test="record.parentid != null" >
+        parentId = #{record.parentid,jdbcType=INTEGER},
+      </if>
+      <if test="record.userauthor != null" >
+        userAuthor = #{record.userauthor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imgauthor != null" >
+        imgAuthor = #{record.imgauthor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nameauthor != null" >
+        nameAuthor = #{record.nameauthor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.comment != null" >
+        comment = #{record.comment,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update comment
+    set id = #{record.id,jdbcType=INTEGER},
+      articleId = #{record.articleid,jdbcType=BIGINT},
+      time = #{record.time,jdbcType=VARCHAR},
+      floor = #{record.floor,jdbcType=INTEGER},
+      likeNum = #{record.likenum,jdbcType=INTEGER},
+      parentId = #{record.parentid,jdbcType=INTEGER},
+      userAuthor = #{record.userauthor,jdbcType=VARCHAR},
+      imgAuthor = #{record.imgauthor,jdbcType=VARCHAR},
+      nameAuthor = #{record.nameauthor,jdbcType=VARCHAR},
+      comment = #{record.comment,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update comment
+    set id = #{record.id,jdbcType=INTEGER},
+      articleId = #{record.articleid,jdbcType=BIGINT},
+      time = #{record.time,jdbcType=VARCHAR},
+      floor = #{record.floor,jdbcType=INTEGER},
+      likeNum = #{record.likenum,jdbcType=INTEGER},
+      parentId = #{record.parentid,jdbcType=INTEGER},
+      userAuthor = #{record.userauthor,jdbcType=VARCHAR},
+      imgAuthor = #{record.imgauthor,jdbcType=VARCHAR},
+      nameAuthor = #{record.nameauthor,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.article.articlemanagesystem.entity.Comment" >
+    update comment
+    <set >
+      <if test="articleid != null" >
+        articleId = #{articleid,jdbcType=BIGINT},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="floor != null" >
+        floor = #{floor,jdbcType=INTEGER},
+      </if>
+      <if test="likenum != null" >
+        likeNum = #{likenum,jdbcType=INTEGER},
+      </if>
+      <if test="parentid != null" >
+        parentId = #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="userauthor != null" >
+        userAuthor = #{userauthor,jdbcType=VARCHAR},
+      </if>
+      <if test="imgauthor != null" >
+        imgAuthor = #{imgauthor,jdbcType=VARCHAR},
+      </if>
+      <if test="nameauthor != null" >
+        nameAuthor = #{nameauthor,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.article.articlemanagesystem.entity.Comment" >
+    update comment
+    set articleId = #{articleid,jdbcType=BIGINT},
+      time = #{time,jdbcType=VARCHAR},
+      floor = #{floor,jdbcType=INTEGER},
+      likeNum = #{likenum,jdbcType=INTEGER},
+      parentId = #{parentid,jdbcType=INTEGER},
+      userAuthor = #{userauthor,jdbcType=VARCHAR},
+      imgAuthor = #{imgauthor,jdbcType=VARCHAR},
+      nameAuthor = #{nameauthor,jdbcType=VARCHAR},
+      comment = #{comment,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.article.articlemanagesystem.entity.Comment" >
+    update comment
+    set articleId = #{articleid,jdbcType=BIGINT},
+      time = #{time,jdbcType=VARCHAR},
+      floor = #{floor,jdbcType=INTEGER},
+      likeNum = #{likenum,jdbcType=INTEGER},
+      parentId = #{parentid,jdbcType=INTEGER},
+      userAuthor = #{userauthor,jdbcType=VARCHAR},
+      imgAuthor = #{imgauthor,jdbcType=VARCHAR},
+      nameAuthor = #{nameauthor,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
