@@ -40,6 +40,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> findLikeName(String name) {
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andNameLike("%" + name + "%");
+        List<User> userList = userMapper.selectByExample(userExample);
+        return userList;
+    }
+
+
+    @Override
     public List<User> getAllUser(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<User> userList = userMapper.selectByExample(new UserExample());

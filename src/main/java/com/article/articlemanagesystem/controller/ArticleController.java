@@ -49,7 +49,6 @@ public class ArticleController {
     @PostMapping("/update")
     public CommonResult createOrUpdate(Article article){
         Long id = article.getId();
-
         if (id != null){
             articleService.update(article);
         }else {

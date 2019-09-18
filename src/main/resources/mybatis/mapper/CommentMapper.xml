@@ -334,6 +334,7 @@
       parentId = #{parentid,jdbcType=INTEGER},
       userAuthor = #{userauthor,jdbcType=VARCHAR},
       imgAuthor = #{imgauthor,jdbcType=VARCHAR},
+        comment = #{comment,jdbcType=VARCHAR},
       nameAuthor = #{nameauthor,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>

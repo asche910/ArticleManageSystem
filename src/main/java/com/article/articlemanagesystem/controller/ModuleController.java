@@ -30,9 +30,13 @@ public class ModuleController {
         return CommonResult.success(null);
     }
 
-    @GetMapping("/update")
+    @PostMapping("/update")
     public CommonResult update(Module module){
-        moduleService.update(module);
+        if (module.getId() == null || module.getId() == 0){
+            moduleService.addModule(module);
+        }else {
+            moduleService.update(module);
+        }
         return CommonResult.success(null);
     }
 

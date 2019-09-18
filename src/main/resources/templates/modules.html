@@ -187,14 +187,6 @@
                 <li><a href="/users"> <i class="fa fa-bar-chart"></i>用户 </a></li>
                 <li><a href="/comments"> <i class="icon-padnote"></i>评论 </a></li>
 
-                <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i
-                        class="icon-interface-windows"></i>Example dropdown </a>
-                    <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
-                        <li><a href="#">Page</a></li>
-                        <li><a href="#">Page</a></li>
-                        <li><a href="#">Page</a></li>
-                    </ul>
-                </li>
             </ul>
             <span class="heading">Extras</span>
             <ul class="list-unstyled">
@@ -226,7 +218,7 @@
                     <div role="document" class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 id="exampleModalLabel" class="modal-title">添加模块</h4>
+                                <h4 id="modelTitle" class="modal-title">添加模块</h4>
                                 <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
                             </div>
                             <div class="modal-body">
@@ -242,13 +234,15 @@
                                     </div>
                                     <div class="form-group">
                                         <label>封面地址</label>
-                                        <input type="text" name="imgcover" placeholder="img url" class="form-control">
+                                        <input type="text" id="imgcover" name="imgcover" placeholder="img url" class="form-control">
                                     </div>
                                     <div class="form-group modal-footer">
-                                        <input type="button" value="添加" onclick="sub()" class="btn btn-primary">
+                                        <input type="button" id="submit" value="添加" onclick="sub()" class="btn btn-primary">
                                     </div>
-                                    <input hidden name="usernum" value="0">
-                                    <input hidden name="articlenum" value="0">
+
+                                    <input hidden id="id" name="id" value="0">
+                                    <input hidden id="usernum" name="usernum" value="0">
+                                    <input hidden id="articlenum" name="articlenum" value="0">
                                 </form>
                             </div>
 
@@ -309,7 +303,7 @@
                                                           style="overflow:hidden;width:300px;white-space:nowrap;text-overflow:ellipsis;"></span>
                                                 </td>
                                                 <td>
-                                                    <button class="btn btn-info btn-xxs" >编辑</button>
+                                                    <button class="btn btn-info btn-xxs" th:data-thing="${module}" onclick="mod(this.getAttribute('data-thing'));">编辑</button>
                                                     <button class="btn btn-danger btn-xxs" th:onclick="'del('+${module.id}+')'" >删除</button>
                                                 </td>
                                             </tr>
@@ -380,17 +374,52 @@ function sub() {
 
     $.ajax({
         type: "POST",
-        url: "/module/add",
+        url: "/module/update",
         data: $('#newModule').serialize(),
         async: false,
         success: function (data) {
-            alert("添加成功！");
+            alert("操作成功！");
             location.reload();
         },
         error: function (err) {
             alert("Error " + err.error)
         }
     });
+}
+
+function mod(module) {
+    console.info(module);
+    console.info(typeof module);
+
+    var patId = /,\sid=(.*?),/;
+    var patName = /,\sname=(.*?),/;
+    var patBrief = /,\sbrief=(.*?),/;
+    var patImgCover = /,\simgcover=(.*?),/;
+    var patUserNum = /,\susernum=(.*?),/;
+    var patArticleNum = /,\sarticlenum=(.*?),/;
+    // var patOwner = /,\sowner=(.*?),/;
+
+    var id = patId.exec(module)[1];
+    var name = patName.exec(module)[1];
+    var brief = patBrief.exec(module)[1];
+    var imgcover = patImgCover.exec(module)[1];
+    var usernum = patUserNum.exec(module)[1];
+    var articlenum = patArticleNum.exec(module)[1];
+    // var owner = patOwner.exec(module)[1];
+
+    console.info(imgcover);
+
+    $('#modelTitle').text("修改模块");
+    $('#submit').val("保存");
+
+    $('#myModal').modal().show();
+
+    $('#name').val(name);
+    $('#brief').val(brief);
+    $('#imgcover').val(imgcover);
+    $('#id').val(id);
+    $('#usernum').val(usernum);
+    $('#articlenum').val(articlenum);
 }
 
 function del(id) {

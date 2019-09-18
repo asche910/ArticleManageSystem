@@ -12,6 +12,8 @@ public interface UserService {
 
     List<User> findLikeUserName(String username);
 
+    List<User> findLikeName(String name);
+
     List<User> getAllUser(Integer pageNum, Integer pageSize);
 
     void updateUser(User user);

@@ -39,7 +39,7 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> findByAuthor(String authorUsername) {
         CommentExample commentExample = new CommentExample();
         CommentExample.Criteria criteria = commentExample.createCriteria();
-        criteria.andNameauthorEqualTo(authorUsername);
+        criteria.andUserauthorLike("%" + authorUsername + "%");
         List<Comment> comments = commentMapper.selectByExample(commentExample);
         return comments;
     }
@@ -57,8 +57,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void update(Comment article) {
-        commentMapper.updateByPrimaryKey(article);
+    public void update(Comment comment) {
+        commentMapper.updateByPrimaryKey(comment);
     }
-
 }

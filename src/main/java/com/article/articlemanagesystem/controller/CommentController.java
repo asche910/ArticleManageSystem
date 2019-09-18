@@ -8,10 +8,7 @@ import com.article.articlemanagesystem.service.CommentService;
 import com.article.articlemanagesystem.util.TimeUtils;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -57,11 +54,28 @@ public class CommentController {
         return CommonResult.success(articles);
     }
 
+    @PostMapping("/update")
+    public CommonResult update(Comment comment){
+        if (comment.getId() == null || comment.getId() == 0){
+            comment.setTime(TimeUtils.getCurrentTime());
+            commentService.publish(comment);
+        }else{
+            commentService.update(comment);
+        }
+        return CommonResult.success();
+    }
+
     @RequestMapping("/all")
     public PageInfo getAll(@RequestParam(name = "pageNum", required = false, defaultValue = "1") int pageNum,
-                           @RequestParam(name = "pageSize", defaultValue = "5") int pageSize) {
+                           @RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
         List<Comment> allArticle = commentService.getAll(pageNum, pageSize);
         PageInfo pageInfo = new PageInfo<>(allArticle);
         return pageInfo;
+    }
+
+    @GetMapping("/delete")
+    public CommonResult delete(Integer id){
+        commentService.deleteById(id);
+        return CommonResult.success();
     }
 }
