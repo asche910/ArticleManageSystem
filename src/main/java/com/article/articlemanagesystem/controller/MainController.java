@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.article.articlemanagesystem.util.PrintUtils.println;
@@ -28,7 +29,7 @@ public class MainController {
     private ArticleService articleService;
 
     @GetMapping("/")
-    public String home(HttpServletRequest request){
+    public String home(HttpServletRequest request) {
         Object user = request.getSession().getAttribute("user");
         return "index";
 
@@ -40,14 +41,14 @@ public class MainController {
     }
 
     @GetMapping("/modules")
-    private String modules(Model model){
+    private String modules(Model model) {
         List<Module> modules = moduleService.getAll();
         model.addAttribute("modules", modules);
         return "modules";
     }
 
     @GetMapping("/articles")
-    private String articles(Model model, @RequestParam(defaultValue = "1") int pageNum){
+    private String articles(Model model, @RequestParam(defaultValue = "1") int pageNum) {
         List<Article> articles = articleService.getAll(pageNum, 10);
         PageInfo pageInfo = new PageInfo<>(articles);
 
@@ -58,7 +59,7 @@ public class MainController {
     }
 
     @GetMapping("/article/{id}")
-    public String viewArticle(Model model, @PathVariable long id){
+    public String viewArticle(Model model, @PathVariable long id) {
         println("id: " + id);
         Article article = articleService.findById(id);
         String content = article.getContent();
@@ -69,23 +70,47 @@ public class MainController {
     }
 
     @GetMapping("/modify")
-    public String newArticle(Model model, Long id){
+    public String newArticle(Model model, Long id) {
         List<Module> modules = moduleService.getAll();
         model.addAttribute("modules", modules);
-        if (id != null){
+        if (id != null) {
             Article article = articleService.findById(id);
             model.addAttribute("article", article);
         }
         return "modify";
     }
 
+    @GetMapping("/query")
+    public String query(Model model, String title, String username) {
+        List<Article> tempList = new ArrayList<>();
+        List<Article> articles = new ArrayList<>();
+        if (title != null && !title.equals("")) {
+            tempList = articleService.findByTitle(title);
+        }
+        if (username != null && !username.equals("")) {
+            if (tempList.isEmpty()) {
+                articles = articleService.findByAuthor(username);
+            } else {
+                for (Article article : tempList) {
+                    if (article.getAuthor().contains(username)) {
+                        articles.add(article);
+                    }
+                }
+            }
+        }else {
+            articles = tempList;
+        }
+        model.addAttribute("articles", articles);
+        return "articles";
+    }
+
     @GetMapping("/users")
-    private String users(){
+    private String users() {
         return "users";
     }
 
     @GetMapping("/comments")
-    private String comments(){
+    private String comments() {
         return "comments";
     }
 

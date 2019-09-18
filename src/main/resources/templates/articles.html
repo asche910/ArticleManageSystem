@@ -224,15 +224,47 @@
                     <li class="breadcrumb-item"><a href="/">Home</a> <span>/文章</span></li>
 
                     <li>
+                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#query-article">查找文章</button>
                         <a class="btn btn-primary btn-sm" href="/modify">添加文章</a>
                     </li>
                 </ul>
             </div>
+
+
+            <div id="query-article" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+                <div role="document" class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 id="exampleModalLabel" class="modal-title" >查找文章</h4>
+                            <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>请填写查询条件</p>
+                            <form id="newModule" action="/query">
+                                <div class="form-group">
+                                    <label>文章标题</label>
+                                    <input type="text" id="title" name="title" placeholder="article title" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>文章作者</label>
+                                    <input type="text" id="username" name="username" placeholder="author username" class="form-control">
+                                </div>
+                                <div class="form-group modal-footer">
+                                    <input type="button" onclick="query()" value="开始查找" class="btn btn-primary">
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
             <section class="tables">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-auto">
-                            <div class="card">
+                            <div class="card" style="width: 1210px">
                                 <div class="card-close">
                                     <div class="dropdown">
                                         <button type="button" id="closeCard1" data-toggle="dropdown"
@@ -283,7 +315,7 @@
                                                 <td><span th:text="${article.commentnum}"></span></td>
                                                 <td><span th:text="${article.likenum}"></span></td>
                                                 <td><span th:text="${article.imgcover}"
-                                                          style="overflow:hidden;width:150px;white-space:nowrap;text-overflow:ellipsis;"></span>
+                                                          style="overflow:hidden;width:110px;white-space:nowrap;text-overflow:ellipsis;"></span>
                                                 </td>
                                                 </td>
                                                 <td>
@@ -300,7 +332,7 @@
                                     </div>
 
 
-                                    <div class="box-footer clearfix">
+                                    <div th:if="${pageNum}" class="box-footer clearfix">
                                         <div class="no-margin pull-left">
                                             &nbsp;&nbsp;第<span th:text="${pageNum}"></span> / <span
                                                 th:text="${totalPage}"></span>页
@@ -389,6 +421,16 @@
                 }
             })
         }
+    }
+
+    function query() {
+        var title = $('#title').val();
+        var username = $('#username').val();
+        if ((title == null || title == "") && (username == null || username == "")){
+            alert("请至少选择一个查询条件！");
+            return;
+        }
+        window.location.href = "/query?title=" + title + "&username=" + username;
     }
 
     function initButton() {

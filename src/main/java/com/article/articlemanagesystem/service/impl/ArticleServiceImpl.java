@@ -33,7 +33,7 @@ public class ArticleServiceImpl implements ArticleService {
     public List<Article> findByTitle(String title) {
         ArticleExample articleExample = new ArticleExample();
         ArticleExample.Criteria criteria = articleExample.createCriteria();
-        criteria.andTitleLike(title);
+        criteria.andTitleLike("%" + title + "%");
         List<Article> articles = articleMapper.selectByExample(articleExample);
         return articles;
     }
@@ -42,7 +42,7 @@ public class ArticleServiceImpl implements ArticleService {
     public List<Article> findByAuthor(String  authorUsername) {
         ArticleExample articleExample = new ArticleExample();
         ArticleExample.Criteria criteria = articleExample.createCriteria();
-        criteria.andAuthorLike(authorUsername);
+        criteria.andAuthorLike("%" + authorUsername + "%");
         List<Article> articles = articleMapper.selectByExample(articleExample);
         return articles;
     }

@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     public List<User> findLikeUserName(String username) {
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
-        criteria.andUserLike(username);
+        criteria.andUserLike("%" + username + "%");
         List<User> userList = userMapper.selectByExample(userExample);
         return userList;
     }
