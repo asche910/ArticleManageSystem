@@ -11,12 +11,12 @@ spring:
     username: root
     password: 123456
     initialization-mode: never
-#    schema: classpath:schema.sql
+  #    schema: classpath:schema.sql
   #  jpa:
   #    hibernate:
   #      ddl-auto: update
-#  cache:
-#    type: redis
+  #  cache:
+  #    type: redis
   servlet:
     multipart:
       max-request-size: 12800KB
@@ -33,3 +33,9 @@ pagehelper:
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql
+
+
+logging.level.com.article.articlemanagesystem.mapper: debug
+Loggers:
+  Root:
+    level: debug
